@@ -19,7 +19,7 @@ import session.UsersFacade;
 
 /**
  *
- * @author WD
+ * @author Serhii Bielik
  */
 @WebServlet(name = "UserController", 
         loadOnStartup = 1,
@@ -38,6 +38,20 @@ public class UserController extends HttpServlet {
 
         super.init(servletConfig);
 
+    }
+    
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
     }
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -60,7 +74,7 @@ public class UserController extends HttpServlet {
         switch (userPath) {
             case "/login":                
                 if (user != null) {
-                    response.sendRedirect("/");
+                    response.sendRedirect("/home");
                     return;               
                 } else {
                     userPath = "/login";
@@ -69,7 +83,7 @@ public class UserController extends HttpServlet {
                 
             case "/logout":
                 if (user == null) {
-                    response.sendRedirect("/");
+                    response.sendRedirect("/home");
                     return;               
                 }
                 session.removeAttribute("isAdmin");
@@ -80,7 +94,7 @@ public class UserController extends HttpServlet {
                 
             case "/signup":
                 if (user != null) {
-                    response.sendRedirect("/");
+                    response.sendRedirect("/home");
                     return;               
                 } else {
                     userPath = "/signup";
@@ -114,7 +128,7 @@ public class UserController extends HttpServlet {
         HttpSession session = request.getSession();
         user = (Users) session.getAttribute("user");
         if (user != null) {
-            response.sendRedirect("/");
+            response.sendRedirect("/home");
             return;                
         }
         
@@ -133,7 +147,7 @@ public class UserController extends HttpServlet {
                          session.setAttribute("isAdmin", true);
                     session.setAttribute("username", user.getUsername());
                     session.setAttribute("user", user);
-                    response.sendRedirect("/");
+                    response.sendRedirect("/home");
                     return;
                 } else {
                     request.setAttribute("errorMsg","Wrong email or password");
@@ -156,7 +170,7 @@ public class UserController extends HttpServlet {
                     request.setAttribute("errorMsg","Email or username is not unique");
                 }
                 
-                userPath = "/login";
+                userPath = "/login";                
                 break;
         }
         

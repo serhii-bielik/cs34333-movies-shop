@@ -13,7 +13,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author WD
+ * @author Serhii Bielik
  */
 @Stateless
 public class UsersFacade extends AbstractFacade<Users> {
@@ -29,7 +29,7 @@ public class UsersFacade extends AbstractFacade<Users> {
     public UsersFacade() {
         super(Users.class);
     }
-
+    
     public Users login(String email, String pwd) {
         try {
             pwd = MD5(pwd);
@@ -77,4 +77,5 @@ public class UsersFacade extends AbstractFacade<Users> {
         }
         return null;
     }
+    
 }

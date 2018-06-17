@@ -1,7 +1,7 @@
 <%-- 
     Document   : login
     Created on : Jun 16, 2018, 1:37:11 PM
-    Author     : WD
+    Author     : Serhii Bielik
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

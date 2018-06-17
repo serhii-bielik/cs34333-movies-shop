@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -22,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author WD
+ * @author Serhii Bielik
  */
 @Entity
 @Table(name = "reviews")
@@ -30,8 +32,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Reviews.findAll", query = "SELECT r FROM Reviews r")
     , @NamedQuery(name = "Reviews.findById", query = "SELECT r FROM Reviews r WHERE r.id = :id")
-    , @NamedQuery(name = "Reviews.findByMovieId", query = "SELECT r FROM Reviews r WHERE r.movieId = :movieId")
-    , @NamedQuery(name = "Reviews.findByUserId", query = "SELECT r FROM Reviews r WHERE r.userId = :userId")
     , @NamedQuery(name = "Reviews.findByRating", query = "SELECT r FROM Reviews r WHERE r.rating = :rating")
     , @NamedQuery(name = "Reviews.findByTitle", query = "SELECT r FROM Reviews r WHERE r.title = :title")
     , @NamedQuery(name = "Reviews.findByBody", query = "SELECT r FROM Reviews r WHERE r.body = :body")
@@ -44,14 +44,6 @@ public class Reviews implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "movie_id")
-    private int movieId;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "user_id")
-    private int userId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @NotNull
@@ -71,6 +63,12 @@ public class Reviews implements Serializable {
     @NotNull
     @Column(name = "is_approved")
     private boolean isApproved;
+    @JoinColumn(name = "movie_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Movies movieId;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Users userId;
 
     public Reviews() {
     }
@@ -79,10 +77,8 @@ public class Reviews implements Serializable {
         this.id = id;
     }
 
-    public Reviews(Integer id, int movieId, int userId, BigDecimal rating, String title, String body, boolean isApproved) {
+    public Reviews(Integer id, BigDecimal rating, String title, String body, boolean isApproved) {
         this.id = id;
-        this.movieId = movieId;
-        this.userId = userId;
         this.rating = rating;
         this.title = title;
         this.body = body;
@@ -95,22 +91,6 @@ public class Reviews implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public int getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public BigDecimal getRating() {
@@ -143,6 +123,22 @@ public class Reviews implements Serializable {
 
     public void setIsApproved(boolean isApproved) {
         this.isApproved = isApproved;
+    }
+
+    public Movies getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(Movies movieId) {
+        this.movieId = movieId;
+    }
+
+    public Users getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Users userId) {
+        this.userId = userId;
     }
 
     @Override
